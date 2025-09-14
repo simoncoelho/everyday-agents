@@ -1,11 +1,13 @@
 import asyncio
+from dotenv import load_dotenv
 
 from agents import Runner
 
 try:
+    # Try relative import (works when running as module or imported)
     from .agent.get_learning_agent import get_learning_agent
 except ImportError:
-    # If running as script, use absolute import
+    # Fall back to absolute import (works when running as script)
     from agent.get_learning_agent import get_learning_agent
 
 
@@ -29,5 +31,6 @@ class TailoredLearningWorkflow:
 
 
 if __name__ == "__main__":
+    load_dotenv()
     workflow = TailoredLearningWorkflow()
     asyncio.run(workflow.run())
