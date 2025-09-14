@@ -4,13 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This repository is for "everyday-agents" - a collection of simple agentic workflows for automation of everyday tasks using the OpenAI Agents SDK.
+"everyday-agents" is a collection of simple agentic workflows for automation of everyday tasks using the OpenAI Agents SDK. The project is designed to help users automate common tasks through AI agents.
 
 ## Tech Stack
 
 - **Package Manager**: uv (Ultra-fast Python package installer and resolver)
-- **Agent Framework**: OpenAI Agents SDK
-- **Language**: Python
+- **Agent Framework**: OpenAI Agents SDK (`openai-agents` package)
+- **Language**: Python 3.13+
+- **Key Dependencies**:
+  - `openai` - OpenAI API client
+  - `python-dotenv` - Environment variable management
+  - `markdown-pdf` - PDF generation from markdown
 
 ## Development Commands
 
@@ -22,31 +26,69 @@ uv remove <package>                 # Remove a dependency
 uv run <command>                    # Run command in virtual environment
 
 # Development tasks
-uv run pytest                       # Run tests
-uv run ruff check                   # Lint code
-uv run ruff format                  # Format code
-uv run mypy src                     # Type checking
+uv run pytest                       # Run all tests
+uv run pytest tests/specific_test.py # Run specific test file
+uv run ruff check                   # Lint code (check for errors)
+uv run ruff format                  # Format code (auto-fix style)
+uv run ruff check --fix             # Fix auto-fixable linting issues
+uv run mypy src                     # Type checking on source code
+
+# Project execution
+uv run everyday-agents              # Run the main CLI (when implemented)
 ```
 
-## Project Structure
+## Actual Project Structure
 
 ```
-├── src/everyday_agents/    # Main package
-│   └── core/              # Core functionality
-│       ├── base_agent.py  # Abstract base agent class
-│       └── __init__.py
-├── agents/                # Specific agent implementations
-├── examples/             # Usage examples
-├── tests/                # Test suite
-├── docs/                 # Documentation
-└── .env.example          # Environment variable template
+├── src/
+│   ├── everyday_agents/           # Main package (importable as everyday_agents)
+│   │   └── __init__.py           # Package initialization
+│   └── workflows/                # Specific workflow implementations
+│       └── tailored-learning/    # Educational content generation workflow
+│           ├── __init__.py
+│           ├── tailored-learning-workflow.py  # Main workflow class
+│           └── agent/
+│               ├── tailored-lesson-agent.py   # Agent definition
+│               └── tools/
+│                   └── create-pdf.py          # PDF creation tool
+├── .env.example                  # Environment variable template
+├── pyproject.toml               # Project configuration and dependencies
+└── uv.lock                      # Dependency lockfile
 ```
 
-## Architecture Notes
+## Architecture & Workflow Pattern
 
-- **BaseAgent**: Abstract base class for all agents (`src/everyday_agents/core/base_agent.py`)
-- **Agents Directory**: Specific agent implementations for different tasks
-- **Examples Directory**: Demonstrations of how to use agents
-- **Environment Configuration**: Use `.env` files for API keys and settings
+**Workflow Structure**: Each workflow in `src/workflows/` follows this pattern:
+- Main workflow class (e.g., `TailoredLearningWorkflow`)
+- Agent definitions using OpenAI Agents SDK
+- Tool implementations for specific capabilities
+- Integration with external services (Notion, PDF generation, etc.)
 
-This project builds agentic workflows using OpenAI's API. Each agent inherits from `BaseAgent` and implements the `execute()` method for its specific automation task.
+**Key Patterns**:
+- Workflows are organized in separate directories under `src/workflows/`
+- Each workflow contains its own agent definitions and tools
+- Agents are configured with specific instructions/prompts
+- Tools handle specific capabilities (PDF creation, API calls, etc.)
+
+**Environment Configuration**:
+- Use `.env` files for API keys (OpenAI, Notion, etc.)
+- Follow the `.env.example` template for required variables
+
+## Python/uv Specific Notes
+
+**Package vs Project Naming Convention**:
+- Project name: `everyday-agents` (with hyphens, used in pip install, PyPI)
+- Package name: `everyday_agents` (with underscores, used in Python imports)
+- This is standard Python convention - hyphens in distribution names, underscores in import names
+
+**uv Benefits over pip**:
+- Much faster dependency resolution and installation
+- Built-in virtual environment management
+- Lockfile for reproducible builds (`uv.lock`)
+- `uv run` automatically manages virtual environment
+
+**Development Workflow**:
+1. `uv sync` to install dependencies
+2. `uv run ruff format && uv run ruff check --fix` before committing
+3. `uv run mypy src` to verify type annotations
+4. `uv run pytest` to run tests

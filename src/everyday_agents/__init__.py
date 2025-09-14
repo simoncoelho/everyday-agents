@@ -1,1 +1,0 @@
-# This file marks everyday_agents as a Python package.
