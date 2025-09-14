@@ -1,5 +1,7 @@
 import asyncio
 from dotenv import load_dotenv
+from agents.mcp import MCPServerStreamableHttp, MCPServerStreamableHttpParams, MCPServer
+import os
 
 from agents import Runner
 
@@ -21,6 +23,8 @@ class TailoredLearningWorkflow:
         self.agent = get_learning_agent(self.page_counts)
 
     async def run(self):
+        await self.initialize()
+
         for _ in range(self.document_count):
             print("Beginning run...")
             result = await Runner.run(self.agent, input="Create a personalized learning lesson based on my profile and interests")
@@ -29,6 +33,17 @@ class TailoredLearningWorkflow:
         print("Completed all runs.")
 
 
+    async def initialize(self):
+        self.mcp = MCPServerStreamableHttp(
+                MCPServerStreamableHttpParams(
+                    url="https://mcp.notion.com/mcp",
+                    headers={"Authorization": f"Bearer {os.environ["NOTION_API_KEY"]}"}
+                )
+             )
+        self.mcp.create_streams()
+        result = await self.mcp.connect()
+        print("MCP servers intialized.")
+        print(result)
 
 if __name__ == "__main__":
     load_dotenv()
