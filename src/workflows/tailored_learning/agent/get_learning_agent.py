@@ -1,4 +1,4 @@
-from agents import Agent, gen_trace_id, trace
+from agents import Agent, gen_trace_id, trace, ModelSettings
 from agents.mcp import MCPServerStdioParams, MCPServerStdio, MCPServer
 from typing import List
 from .tools import create_pdf, send_pdf_to_kindle
@@ -18,4 +18,5 @@ def get_learning_agent(
             create_pdf,
             send_pdf_to_kindle
         ],
+        model_settings=ModelSettings()
     )
