@@ -5,9 +5,7 @@ A collection of AI-powered agentic workflows for automating everyday tasks using
 ## Features
 
 - **Tailored Learning Workflow**: Generates personalized learning content as PDF documents based on user profiles and interests
-- **MCP Server Integration**: Connects to external services via Model Context Protocol (Notion, etc.)
-- **PDF Generation**: Converts markdown content to professionally formatted PDF documents
-- **Modern Python Stack**: Built with Python 3.13+ and uv package manager for fast dependency management
+    - Utilizes Notion for managing living changes to the users learning preferences  
 
 ## Installation
 
