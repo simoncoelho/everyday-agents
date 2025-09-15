@@ -28,10 +28,15 @@ def system_prompt(
             + The lesson should be very thorough
             + The lesson should be between {number_of_pages_low} and {number_of_pages_high}
             + The lesson should be output as valid markdown
+            + Font should be no larger than size 10 for normal font
 
         Next:
         - Once the lesson has been written up as a markdown string, the lesson should be converted to a PDF with and appropriate title.
+        
+        Next:
+        - Send the PDF to the kindle device.
+        
+        Last Step:
+        - Update the data table within the 'Past Learnings' page on Notion to reflect what was generated.
 
-        
-        
         """
